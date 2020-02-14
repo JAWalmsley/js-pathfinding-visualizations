@@ -130,7 +130,7 @@ class Node extends DrawableObject {
 Node.populateNodes();
 
 startNode = new Node(2, 2, Helpers.getRandomColor());
-endNode = new Node(15, 2, Helpers.getRandomColor());
+endNode = new Node(17, 10, Helpers.getRandomColor());
 currNode = startNode;
 
 
@@ -143,19 +143,18 @@ async function update() {
 }
 
 function updateAlgorithm() {
-  if(currNode == endNode) {
+  if (currNode == endNode) {
     console.log("WIN!")
     clearInterval(interval);
-  }
-  else {
+  } else {
     var nextCurrNode = currNode.getNeighbors()[0];
     currNode.getNeighbors().forEach(function(neighbor) {
-      if(neighbor == endNode) {
+      if (neighbor == endNode) {
         nextCurrNode = neighbor;
       }
-      if (neighbor.calculateHCost() < currNode.calculateHCost() && !pathArray.includes(neighbor)) {
+      if (neighbor.calculateHCost() < nextCurrNode.calculateHCost() && !pathArray.includes(neighbor)) {
         nextCurrNode = neighbor;
-        console.log("Moved to " + currNode.x + currNode.y);
+        console.log("Moved to " + currNode.x + " , " + currNode.y + " because " + neighbor.calculateHCost() + " is less than " + currNode.calculateHCost());
       }
     })
     currNode = nextCurrNode;
@@ -163,10 +162,5 @@ function updateAlgorithm() {
     update();
   }
 }
-// ctx.font = "10px Arial";
-//
-// ctx.fillStyle = "red";
-// ctx.textAlign = "left";
-// ctx.fillText("77", 0, 30);
 
-var interval = setInterval(updateAlgorithm, 3000);
+var interval = setInterval(updateAlgorithm, 300);
