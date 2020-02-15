@@ -102,13 +102,10 @@ class Node extends DrawableObject {
 
   getNeighbors() {
     this.neighbors = [];
-    //
     for (let nx = this.x - 1; nx <= this.x + 1; nx++) {
       for (let ny = this.y - 1; ny <= this.y + 1; ny++) {
         // You can't be your own neighbor
-        if (nx == this.x && ny == this.y) {
-          continue;
-        } else if (Node.isNode(nx, ny)) {
+      if (Node.isNode(nx, ny) && !(nx === this.x && ny === this.y)) {
           this.neighbors.push(nodeArray[nx][ny]);
         }
       }
@@ -131,32 +128,32 @@ Node.populateNodes();
 
 startNode = new Node(2, 2, Helpers.getRandomColor());
 endNode = new Node(17, 10, Helpers.getRandomColor());
-currNode = startNode;
+let currNode = startNode;
 
 
-async function update() {
+function update() {
   // Make the path of the algorithm blue
-  if (currNode != endNode) {
-    currNode.fillColour = "#00f"
+  if (currNode !== endNode) {
+    currNode.fillColour = "#00f";
   }
   Node.drawNodes();
 }
 
 function updateAlgorithm() {
-  if (currNode == endNode) {
-    console.log("WIN!")
+  if (currNode === endNode) {
+    console.log("WIN!");
     clearInterval(interval);
   } else {
     var nextCurrNode = currNode.getNeighbors()[0];
     currNode.getNeighbors().forEach(function(neighbor) {
-      if (neighbor == endNode) {
+      if (neighbor === endNode) {
         nextCurrNode = neighbor;
       }
       if (neighbor.calculateHCost() < nextCurrNode.calculateHCost() && !pathArray.includes(neighbor)) {
         nextCurrNode = neighbor;
         console.log("Moved to " + currNode.x + " , " + currNode.y + " because " + neighbor.calculateHCost() + " is less than " + currNode.calculateHCost());
       }
-    })
+    });
     currNode = nextCurrNode;
     pathArray.push(currNode);
     update();
