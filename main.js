@@ -5,6 +5,8 @@ const DEFAULT_NODE_SIZE = 30;
 const GRID_SIZE = c.width / DEFAULT_NODE_SIZE;
 let gridArray = [];
 
+let algorithmUpdateInterval;
+
 for (let x = 0; x < GRID_SIZE; x++) {
     gridArray[x] = [];
 }
@@ -44,7 +46,6 @@ class Helpers {
     static sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-
 }
 
 class DrawableObject {
@@ -160,14 +161,14 @@ class Node extends GridItem {
         ctx.font = "10px Arial";
         ctx.fillStyle = "red";
         ctx.textAlign = "right";
-        ctx.fillText(Math.round(this.hCost * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
+        ctx.fillText(Math.round(calculateFCost(this) * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
+        console.log(calculateFCost(this));
         // ctx.fillText(this.x, this.x * this.width + this.width, this.y * this.height + this.height);
-
     }
 }
 
 class Wall extends GridItem {
-    constructor(x, y, fillColour = "000", strokeColour = "FFFFFF") {
+    constructor(x, y, fillColour = "#000", strokeColour = "#FFF") {
         super(x, y, fillColour, strokeColour);
     }
 
@@ -212,7 +213,12 @@ function clickHandler(event) {
                 let nodeHeight = gridArray[x][y].height;
                 // If clickY is inside current y row
                 if (clickY > y * nodeHeight && clickY < (y + 1) * nodeHeight) {
-                    gridArray[x][y] = new Wall(x, y);
+                    if (Wall.isWall(x, y)) {
+                        gridArray[x][y] = new Node(x, y);
+                    } else {
+                        gridArray[x][y] = new Wall(x, y);
+                    }
+
                     update();
                 }
             }
