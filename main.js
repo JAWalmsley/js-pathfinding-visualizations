@@ -162,7 +162,7 @@ class Node extends GridItem {
         ctx.fillStyle = "red";
         ctx.textAlign = "right";
         ctx.fillText(Math.round(calculateFCost(this) * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
-        console.log(calculateFCost(this));
+        // console.log(calculateFCost(this));
         // ctx.fillText(this.x, this.x * this.width + this.width, this.y * this.height + this.height);
     }
 }
@@ -218,7 +218,6 @@ function clickHandler(event) {
                     } else {
                         gridArray[x][y] = new Wall(x, y);
                     }
-
                     update();
                 }
             }
