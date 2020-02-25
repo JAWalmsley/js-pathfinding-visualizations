@@ -55,17 +55,21 @@ function updateAStar() {
 
         currNode.getNeighbors().forEach(function (neighbor) {
             if (neighbor === endNode) {
+                parentNodes[endNode.x][endNode.y] = currNode;
+                currNode = endNode;
                 clearInterval(algorithmUpdateInterval);
                 console.log('WIN');
 
                 // Reconstruct the shortest path
                 let currStep = neighbor;
                 while(!shortestPath.includes(startNode)) {
-                    currStep.fillColour = "#0F0"
+                    console.log(currStep);
+                    currStep.fillColour = "#0F0";
                     shortestPath.push(parentNodes[currStep.x][currStep.y]);
                     currStep = parentNodes[currStep.x][currStep.y];
                 }
-            } else {
+                update();
+            } else if (!Wall.isWall(neighbor.x, neighbor.y)) {
                 gCosts[neighbor.x][neighbor.y] = calculateGCost(q) + 1;
                 // If the neighbor is a worse path than the current node
                 if (openNodes.includes(neighbor)) {
