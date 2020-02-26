@@ -113,8 +113,6 @@ class GridItem extends DrawableObject {
 class Node extends GridItem {
     constructor(x, y, fillColour = "#FFF", strokeColour = "#000") {
         super(x, y, fillColour, strokeColour);
-        this.gCost = Infinity;
-        this.hCost = 0;
     }
 
     /**
@@ -131,10 +129,10 @@ class Node extends GridItem {
     /**
      * Fills the grid with nodes
      */
-    static populateNodes() {
+    static populateNodes(nodeType) {
         for (let x = 0; x < GRID_SIZE; x++) {
             for (let y = 0; y < GRID_SIZE; y++) {
-                gridArray[x][y] = new Node(x, y);
+                gridArray[x][y] = new nodeType(x, y);
             }
         }
     }
@@ -157,12 +155,6 @@ class Node extends GridItem {
      */
     draw() {
         super.draw();
-        ctx.font = "10px Arial";
-        ctx.fillStyle = "red";
-        ctx.textAlign = "right";
-        ctx.fillText(Math.round(calculateFCost(this) * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
-        // console.log(calculateFCost(this));
-        // ctx.fillText(this.x, this.x * this.width + this.width, this.y * this.height + this.height);
     }
 }
 
@@ -193,10 +185,6 @@ class Wall extends GridItem {
  * Update the screen, draw all grid items
  */
 function update() {
-    // Make the path of the algorithm blue
-    if (currNode !== endNode) {
-        currNode.fillColour = "#00f";
-    }
     GridItem.drawGrid();
 }
 
@@ -226,7 +214,5 @@ function clickHandler(event) {
 
 c.addEventListener('click', clickHandler, false);
 
-Node.populateNodes();
 
-startNode = new Node(2, 2, Helpers.getRandomColor());
-endNode = new Node(17, 10, Helpers.getRandomColor());
+
