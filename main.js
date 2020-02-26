@@ -176,7 +176,7 @@ class Wall extends GridItem {
         } else return gridArray[x][y] instanceof Wall;
     }
 
-    draw () {
+    draw() {
         super.draw();
     }
 }
@@ -188,31 +188,43 @@ function update() {
     GridItem.drawGrid();
 }
 
-function clickHandler(event) {
-    let clickX = event.pageX - c.offsetLeft,
-        clickY = event.pageY - c.offsetTop;
+let mouseIsDown = false;
 
-    for (let x = 0; x < gridArray.length; x++) {
-        let nodeWidth = gridArray[x][0].width;
-        // If clickX is inside current x column
-        if (clickX > x * nodeWidth && clickX < (x + 1) * nodeWidth) {
-            for (let y = 0; y < gridArray[x].length; y++) {
-                let nodeHeight = gridArray[x][y].height;
-                // If clickY is inside current y row
-                if (clickY > y * nodeHeight && clickY < (y + 1) * nodeHeight) {
-                    if (Wall.isWall(x, y)) {
-                        gridArray[x][y] = new Node(x, y);
-                    } else {
-                        gridArray[x][y] = new Wall(x, y);
+function mouseDragHandler(event) {
+    if (mouseIsDown) {
+        let clickX = event.pageX - c.offsetLeft,
+            clickY = event.pageY - c.offsetTop;
+            let settingWall = true; // If the first tile clicked is a wall, only set walls to avoid flickering between
+        for (let x = 0; x < gridArray.length; x++) {
+            let nodeWidth = gridArray[x][0].width;
+            // If clickX is inside current x column
+            if (clickX > x * nodeWidth && clickX < (x + 1) * nodeWidth) {
+                for (let y = 0; y < gridArray[x].length; y++) {
+                    let nodeHeight = gridArray[x][y].height;
+                    // If clickY is inside current y row
+                    if (clickY > y * nodeHeight && clickY < (y + 1) * nodeHeight) {
+                        if (Wall.isWall(x, y) && !settingWall) {
+                            settingWall = false;
+                            gridArray[x][y] = new AStarNode(x, y);
+                        } else {
+                            settingWall = true;
+                            gridArray[x][y] = new Wall(x, y);
+                        }
+                        update();
                     }
-                    update();
                 }
             }
         }
     }
 }
 
-c.addEventListener('click', clickHandler, false);
+c.addEventListener('mousedown', function () {
+    mouseIsDown = true;
+});
+c.addEventListener('mouseup', function () {
+    mouseIsDown = false;
+});
+c.addEventListener('mousemove', mouseDragHandler);
 
 
 
