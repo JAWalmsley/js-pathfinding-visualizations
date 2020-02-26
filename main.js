@@ -98,7 +98,6 @@ class GridItem extends DrawableObject {
             for (let ny = this.y - 1; ny <= this.y + 1; ny++) {
                 // You can't be your own neighbor
                 if (Node.isNode(nx, ny) && !(nx === this.x && ny === this.y)) {
-
                     this.neighbors.push(gridArray[nx][ny]);
                 }
             }

@@ -69,19 +69,19 @@ function updateAStar() {
                     currStep = parentNodes[currStep.x][currStep.y];
                 }
                 update();
-            } else if (!Wall.isWall(neighbor.x, neighbor.y)) {
-                gCosts[neighbor.x][neighbor.y] = calculateGCost(q) + 1;
-                // If the neighbor is a worse path than the current node
-                if (openNodes.includes(neighbor)) {
-                    if (calculateFCost(neighbor) > calculateFCost(currNode)) {
-                        delete openNodes[neighbor];
-                        closedNodes.push(neighbor);
+            } else {
+                let oldG = gCosts[neighbor.x][neighbor.y];
+                if(!openNodes.includes(neighbor) || calculateGCost(neighbor) <= oldG) {
+                    
+                    calculateFCost(neighbor);
+                    if(!openNodes.includes(neighbor)) {
+                        openNodes.push(neighbor);
                     }
-                } else if (!closedNodes.includes(neighbor)) {    // If neighbor not in openNodes or in closedNodes
-                    openNodes.push(neighbor);
-                    parentNodes[neighbor.x][neighbor.y] = currNode;
+                } else {
+                    gCosts[neighbor.x][neighbor.y] = oldG;
+                    calculateFCost(neighbor);
                 }
-                calculateFCost(neighbor);
+
             }
         })
     }
