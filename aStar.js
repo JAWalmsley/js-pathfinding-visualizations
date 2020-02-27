@@ -50,14 +50,14 @@ Node.populateNodes(AStarNode); // Populate the grid with A* nodes
 
 // The node that the algorithm starts at
 startNode = new AStarNode(2, 2);
-startNode.fillColour = Helpers.getRandomColor();
+startNode.fillColour = startNodeColour;
 
 // The startNode has zero cost to get to itself
 startNode.gCost = 0;
 
 // The node that is considered the goal for the algorithm
 endNode = new AStarNode(17, 10);
-endNode.fillColour = Helpers.getRandomColor();
+endNode.fillColour = endNodeColour;
 
 openNodes = [startNode]; // Nodes that can be visited, originally only contains startNode
 closedNodes = []; // Nodes that have been checked and are not the fastest path
@@ -73,54 +73,57 @@ let currNode; // The node the algorithm is currently considering
  * calculate all the neighbors' costs, rinse and repeat
  */
 function updateAStar() {
-    if (!openNodes.length < 1) {
-        // Sort openNodes by fCost
-        openNodes.sort(function (a, b) {
-            return b.fCost - a.fCost;
-        });
+    if (!finished) {
+        if (!openNodes.length < 1) {
+            // Sort openNodes by fCost
+            openNodes.sort(function (a, b) {
+                return b.fCost - a.fCost;
+            });
 
-        currNode = openNodes.pop();
-        closedNodes.push(currNode);
+            currNode = openNodes.pop();
+            closedNodes.push(currNode);
 
-        currNode.getNeighbors().forEach(function (n) {
-            // Only consider nodes that haven't been removed from consideration already
-            if (closedNodes.includes(n)) {
-                return;
-            }
+            currNode.getNeighbors().forEach(function (n) {
+                // Only consider nodes that haven't been removed from consideration already
+                if (closedNodes.includes(n)) {
+                    return;
+                }
 
-            let newG = currNode.gCost + Node.getDistance(n, currNode);
-            // Update the neighbor's costs if it hasn't been checked yet, or if it can be reached with a lower gCost
-            if (!openNodes.includes(n) || newG < n.gCost) {
-                n.gCost = newG;
-                n.hCost = n.calculateHCost();
-                n.fCost = n.calculateFCost();
-                n.parentNode = currNode;
-                if (!openNodes.includes(n)) {
-                    openNodes.push(n);
+                let newG = currNode.gCost + Node.getDistance(n, currNode);
+                // Update the neighbor's costs if it hasn't been checked yet, or if it can be reached with a lower gCost
+                if (!openNodes.includes(n) || newG < n.gCost) {
+                    n.gCost = newG;
+                    n.hCost = n.calculateHCost();
+                    n.fCost = n.calculateFCost();
+                    n.parentNode = currNode;
+                    if (!openNodes.includes(n)) {
+                        openNodes.push(n);
+                    }
+                }
+            }); // forEach neighbor
+
+            if (currNode === endNode) {
+                console.log("WIN");
+                clearInterval(algorithmUpdateInterval);
+                finished = true;
+                // Draw final shortest path separate from the other nodes
+                let currPathNode = endNode;
+                while (currPathNode !== startNode) {
+                    if (currPathNode !== endNode)
+                        currPathNode.fillColour = "#00F";
+                    currPathNode = currPathNode.parentNode;
                 }
             }
-        }); // forEach neighbor
-
-        if (currNode === endNode) {
-            console.log("WIN");
+        } // !openNodes.empty()
+        else { // THere are no nodes that can be moved to (openNodes is empty)
+            alert("Map is unsolvable!");
             clearInterval(algorithmUpdateInterval);
-            // Draw final shortest path separate from the other nodes
-            let currPathNode = endNode;
-            while (currPathNode !== startNode) {
-                if(currPathNode !== endNode)
-                    currPathNode.fillColour = "#00F";
-                currPathNode = currPathNode.parentNode;
-            }
+            finished = true;
         }
-    } // !openNodes.empty()
-    else { // THere are no nodes that can be moved to (openNodes is empty)
-        alert("Map is unsolvable!");
-        clearInterval(algorithmUpdateInterval);
+
+        // Make the nodes involved in the path finding purple (keep the start and node colours)
+        if (currNode !== startNode && currNode !== endNode)
+            currNode.fillColour = "#F0F";
+        update(); // Draw the grid onscreen
     }
-
-    // Make the nodes involved in the path finding purple (keep the start and node colours)
-    if(currNode !== startNode && currNode !== endNode)
-        currNode.fillColour = "#F0F";
-    update(); // Draw the grid onscreen
-
 }

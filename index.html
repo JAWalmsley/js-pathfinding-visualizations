@@ -12,12 +12,17 @@
     </style>
 </head>
 <body>
-<canvas id="canvas" tabindex="1" width="600" height="600" style="margin:none; border: none; padding: none;"></canvas>
+E and click to place end point, S and click to place start point.<br>
+Click and drag to create walls
+<canvas id="canvas" tabindex="1" autofocus width="600" height="600" style="margin:none; border: none; padding: none;"></canvas>
+<script src="drawableObjects.js"></script>
 <script src="main.js"></script>
 <script src="aStar.js"></script>
+<!--<div id="speed-counter">Speed: </div>-->
+<!--<button type="button" onclick="changeAlgorithmSpeed(1)"> Speed Up</button>-->
+<!--<button type="button" onclick="changeAlgorithmSpeed(-1)"> Slow Down</button>-->
 <button type="button" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start A* Algorithm</button>
 <button type="button" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
-
 <button type="button" onclick="updateAStar()"> One Step</button>
 </body>
 

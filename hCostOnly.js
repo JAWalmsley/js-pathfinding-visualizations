@@ -27,7 +27,7 @@ function startAlgorithm() {
 function updateHCostOnly() {
   if (currNode !== endNode) {
     let nextCurrNode = currNode;
-    currNode.getNeighbors().forEach(function (neighbor) {
+    currNode.getNeighbors(false).forEach(function (neighbor) {
       if(!Wall.isWall(neighbor.x, neighbor.y)) {
         calculateHCost(neighbor);
         if (neighbor === endNode) {
