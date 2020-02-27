@@ -1,16 +1,26 @@
+/* Name: Jack Walmsley
+ * Date: 2020-02-13
+ * Filename: main.js
+ * Purpose: Creates and draws a grid of nodes, provides parent classes for all node types
+ */
+
 let c = document.getElementById("canvas");
 let ctx = c.getContext("2d");
 
-const DEFAULT_NODE_SIZE = 30;
-const GRID_SIZE = c.width / DEFAULT_NODE_SIZE;
-let gridArray = [];
+const DEFAULT_NODE_SIZE = 30;   // Node width and height by default
+const GRID_SIZE = c.width / DEFAULT_NODE_SIZE;  // # of nodes per side of canvas
+let gridArray = []; // 2-D array of all items in the grid
 
 let algorithmUpdateInterval;
 
+// Create empty y arrays at all x positions of gridArray so they can be accessed in format gridArray[x][y]
 for (let x = 0; x < GRID_SIZE; x++) {
     gridArray[x] = [];
 }
 
+/**
+ * Misc. useful functions
+ */
 class Helpers {
     /**
      * Gets displacement from x and y components
@@ -36,19 +46,19 @@ class Helpers {
         }
         return color;
     }
-
-    /**
-     * Sleeps for a give amount of time
-     *
-     * @param ms - The time to sleep in ms
-     * @returns {Promise<unknown>}
-     */
-    static sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 }
 
 class DrawableObject {
+    /**
+     * DrawableObject, anything that shows onscreen
+     *
+     * @param x x position in terms of the grid, NOT PIXELS
+     * @param y y position in terms of the grid, NOT PIXELS
+     * @param fillColour The colour to fill the inside of the square with
+     * @param strokeColour The colour to stroke the border of the square with
+     * @param width The width of the square
+     * @param height The height of the square
+     */
     constructor(x, y, fillColour, strokeColour, width = DEFAULT_NODE_SIZE, height = DEFAULT_NODE_SIZE) {
         this.x = x;
         this.y = y;
@@ -70,6 +80,14 @@ class DrawableObject {
 }
 
 class GridItem extends DrawableObject {
+    /**
+     * Any item that is in the grid, automatically added to gridArray
+     *
+     * @param x x position in terms of the grid, NOT PIXELS
+     * @param y y position in terms of the grid, NOT PIXELS
+     * @param fillColour The colour to fill the inside of the square with
+     * @param strokeColour The colour to stroke the border of the square with
+     */
     constructor(x, y, fillColour, strokeColour) {
         super(x, y, fillColour, strokeColour);
         gridArray[x][y] = this;
@@ -83,6 +101,22 @@ class GridItem extends DrawableObject {
         for (let x = 0; x < GRID_SIZE; x++) {
             for (let y = 0; y < GRID_SIZE; y++) {
                 gridArray[x][y].draw();
+            }
+        }
+    }
+
+    static getGridItemAtPosition(xPos, yPos) {
+        for (let x = 0; x < gridArray.length; x++) {
+            let itemWidth = gridArray[x][0].width;
+            // If xPos is inside current x column
+            if (xPos > x * itemWidth && xPos < (x + 1) * itemWidth) {
+                for (let y = 0; y < gridArray[x].length; y++) {
+                    let itemHeight = gridArray[x][y].height;
+                    // If yPos is inside current y row
+                    if (yPos > y * itemHeight && yPos < (y + 1) * itemHeight) {
+                        return gridArray[x][y];
+                    }
+                }
             }
         }
     }
@@ -104,15 +138,17 @@ class GridItem extends DrawableObject {
         }
         return this.neighbors;
     }
-
-    click() {
-        console.log(this.x + " " + this.y);
-    }
 }
 
 class Node extends GridItem {
-    constructor(x, y, fillColour = "#FFF", strokeColour = "#000") {
-        super(x, y, fillColour, strokeColour);
+    /**
+     * The prototype node for any algorithm's own nodes
+     *
+     * @param x x position in terms of the grid
+     * @param y y position in terms of the grid
+     */
+    constructor(x, y) {
+        super(x, y, "#FFF", "#000");
     }
 
     /**
@@ -120,14 +156,16 @@ class Node extends GridItem {
      *
      * @param node1 - The start node
      * @param node2 - The end node
-     * @returns {number} - The absolute distance between the two nodes
+     * @returns {number} - The euclidean distance between the two nodes
      */
     static getDistance(node1, node2) {
         return Helpers.pythagoreanTheorem(node1.x - node2.x, node1.y - node2.y);
     }
 
     /**
-     * Fills the grid with nodes
+     * Fills the grid with nodes of the specified type
+     *
+     * @param nodeType the type of node to populate the grid with (eg. aStarNode for an A* visualization)
      */
     static populateNodes(nodeType) {
         for (let x = 0; x < GRID_SIZE; x++) {
@@ -140,21 +178,14 @@ class Node extends GridItem {
     /**
      * returns if there is a Node at (x, y)
      *
-     * @param x - The x location to check
-     * @param y - The y location to check
+     * @param x The x location to check
+     * @param y The y location to check
      * @returns {boolean} - Whether there is a node at that location
      */
     static isNode(x, y) {
         if (typeof (gridArray[x]) == 'undefined') {
             return false;
         } else return gridArray[x][y] instanceof Node;
-    }
-
-    /**
-     * Draws the node on the screen, with stats in the corner
-     */
-    draw() {
-        super.draw();
     }
 }
 

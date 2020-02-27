@@ -5,8 +5,8 @@
  */
 
 class AStarNode extends Node {
-    constructor(x, y, fillColour = "#FFF") {
-        super(x, y, fillColour);
+    constructor(x, y) {
+        super(x, y);
         // G Cost is the cost to move from the start node to this node
         this.gCost = Infinity;
         // H cost is the cost to move from this node to the end node
@@ -49,13 +49,15 @@ class AStarNode extends Node {
 Node.populateNodes(AStarNode); // Populate the grid with A* nodes
 
 // The node that the algorithm starts at
-startNode = new AStarNode(2, 2, Helpers.getRandomColor());
+startNode = new AStarNode(2, 2);
+startNode.fillColour = Helpers.getRandomColor();
 
 // The startNode has zero cost to get to itself
 startNode.gCost = 0;
 
 // The node that is considered the goal for the algorithm
-endNode = new AStarNode(17, 10, Helpers.getRandomColor());
+endNode = new AStarNode(17, 10);
+endNode.fillColour = Helpers.getRandomColor();
 
 openNodes = [startNode]; // Nodes that can be visited, originally only contains startNode
 closedNodes = []; // Nodes that have been checked and are not the fastest path
@@ -67,7 +69,8 @@ let currNode; // The node the algorithm is currently considering
 /**
  * Updates the A* algorithm
  *
- * Find the node with lowest fCost, find its neighbors and add them to openNodes, calculate all the neighbors' costs
+ * Find the openNode with lowest fCost, find its neighbors and add them to openNodes,
+ * calculate all the neighbors' costs, rinse and repeat
  */
 function updateAStar() {
     if (!openNodes.length < 1) {
@@ -101,11 +104,11 @@ function updateAStar() {
         if (currNode === endNode) {
             console.log("WIN");
             clearInterval(algorithmUpdateInterval);
-            // Draw final path in green
+            // Draw final shortest path separate from the other nodes
             let currPathNode = endNode;
             while (currPathNode !== startNode) {
-                console.log(currPathNode);
-                currPathNode.fillColour = "#00F";
+                if(currPathNode !== endNode)
+                    currPathNode.fillColour = "#00F";
                 currPathNode = currPathNode.parentNode;
             }
         }
@@ -115,7 +118,9 @@ function updateAStar() {
         clearInterval(algorithmUpdateInterval);
     }
 
-    currNode.fillColour = "#F0F"; // Make the nodes involved in the path finding purple
+    // Make the nodes involved in the path finding purple (keep the start and node colours)
+    if(currNode !== startNode && currNode !== endNode)
+        currNode.fillColour = "#F0F";
     update(); // Draw the grid onscreen
 
 }
