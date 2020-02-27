@@ -220,42 +220,33 @@ function update() {
 }
 
 let mouseIsDown = false;
+let settingWall;
+
+function startDrag(event) {
+    mouseIsDown = true;
+    let clickX = event.pageX - c.offsetLeft,
+        clickY = event.pageY - c.offsetTop;
+    let selectedItem = Node.getGridItemAtPosition(clickX, clickY);
+    settingWall = !(selectedItem instanceof Wall);
+    console.log(settingWall);
+}
 
 function mouseDragHandler(event) {
     if (mouseIsDown) {
         let clickX = event.pageX - c.offsetLeft,
             clickY = event.pageY - c.offsetTop;
-            let settingWall = true; // If the first tile clicked is a wall, only set walls to avoid flickering between
-        for (let x = 0; x < gridArray.length; x++) {
-            let nodeWidth = gridArray[x][0].width;
-            // If clickX is inside current x column
-            if (clickX > x * nodeWidth && clickX < (x + 1) * nodeWidth) {
-                for (let y = 0; y < gridArray[x].length; y++) {
-                    let nodeHeight = gridArray[x][y].height;
-                    // If clickY is inside current y row
-                    if (clickY > y * nodeHeight && clickY < (y + 1) * nodeHeight) {
-                        if (Wall.isWall(x, y) && !settingWall) {
-                            settingWall = false;
-                            gridArray[x][y] = new AStarNode(x, y);
-                        } else {
-                            settingWall = true;
-                            gridArray[x][y] = new Wall(x, y);
-                        }
-                        update();
-                    }
-                }
-            }
+        let selectedItem = Node.getGridItemAtPosition(clickX, clickY);
+        if (selectedItem instanceof Wall && !settingWall) {
+            new AStarNode(selectedItem.x, selectedItem.y);
+        } else if (selectedItem instanceof Node && settingWall) {
+            new Wall(selectedItem.x, selectedItem.y);
         }
+        update();
     }
 }
 
-c.addEventListener('mousedown', function () {
-    mouseIsDown = true;
-});
+c.addEventListener('mousedown', startDrag);
 c.addEventListener('mouseup', function () {
     mouseIsDown = false;
 });
 c.addEventListener('mousemove', mouseDragHandler);
-
-
-
