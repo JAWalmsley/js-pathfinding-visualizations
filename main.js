@@ -220,22 +220,22 @@ function update() {
 }
 
 let mouseIsDown = false;
-let settingWall;
+let settingWall; // true for placing walls, false for deleting walls
 
 function startDrag(event) {
     mouseIsDown = true;
     let clickX = event.pageX - c.offsetLeft,
         clickY = event.pageY - c.offsetTop;
-    let selectedItem = Node.getGridItemAtPosition(clickX, clickY);
+    let selectedItem = GridItem.getGridItemAtPosition(clickX, clickY);
+    // If the user first clicks on a wall, start deleting walls. Otherwise, start placing walls.
     settingWall = !(selectedItem instanceof Wall);
-    console.log(settingWall);
 }
 
 function mouseDragHandler(event) {
     if (mouseIsDown) {
         let clickX = event.pageX - c.offsetLeft,
             clickY = event.pageY - c.offsetTop;
-        let selectedItem = Node.getGridItemAtPosition(clickX, clickY);
+        let selectedItem = GridItem.getGridItemAtPosition(clickX, clickY);
         if (selectedItem instanceof Wall && !settingWall) {
             new AStarNode(selectedItem.x, selectedItem.y);
         } else if (selectedItem instanceof Node && settingWall) {
