@@ -1,17 +1,21 @@
 <html>
 
 <head>
+    <title>A* Pathfinding - Jack Walmsley</title>
     <style>
         canvas {
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*transform: translate(-50%);*/
             border: 1px solid black;
         }
     </style>
 </head>
 <body>
-<canvas id="canvas" width="600" height="600" style="margin:none; border: none; padding: none;"></canvas>
+<canvas id="canvas" tabindex="1" width="600" height="600" style="margin:none; border: none; padding: none;"></canvas>
 <script src="main.js"></script>
 <script src="aStar.js"></script>
-<button type="button" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start Algorithm</button>
+<button type="button" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start A* Algorithm</button>
 <button type="button" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
 
 <button type="button" onclick="updateAStar()"> One Step</button>

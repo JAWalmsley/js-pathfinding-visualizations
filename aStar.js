@@ -42,7 +42,7 @@ class AStarNode extends Node {
         ctx.font = "10px Arial";
         ctx.fillStyle = "red";
         ctx.textAlign = "right";
-        ctx.fillText(Math.round(this.calculateFCost() * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
+        // ctx.fillText(Math.round(this.calculateFCost() * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
     }
 }
 

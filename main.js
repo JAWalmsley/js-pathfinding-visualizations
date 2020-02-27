@@ -7,7 +7,7 @@
 let c = document.getElementById("canvas");
 let ctx = c.getContext("2d");
 
-const DEFAULT_NODE_SIZE = 30;   // Node width and height by default
+const DEFAULT_NODE_SIZE = 10;   // Node width and height by default
 const GRID_SIZE = c.width / DEFAULT_NODE_SIZE;  // # of nodes per side of canvas
 let gridArray = []; // 2-D array of all items in the grid
 
@@ -220,15 +220,47 @@ function update() {
 }
 
 let mouseIsDown = false;
-let settingWall; // true for placing walls, false for deleting walls
+let placingWall; // true for placing walls, false for deleting walls
+let placingStart = false;
+let placingEnd = false;
 
-function startDrag(event) {
-    mouseIsDown = true;
+function keyDownHandler(event) {
+    console.log("SWAG");
+    if (event.key == "s") {
+        placingStart = true;
+        placingEnd = false;
+    } else if (event.key == "e") {
+        placingEnd = true;
+        placingStart = false;
+    } else {
+        placingEnd = false;
+        placingStart = false;
+    }
+    console.log(placingEnd);
+}
+
+function mouseDownHandler(event) {
     let clickX = event.pageX - c.offsetLeft,
         clickY = event.pageY - c.offsetTop;
     let selectedItem = GridItem.getGridItemAtPosition(clickX, clickY);
-    // If the user first clicks on a wall, start deleting walls. Otherwise, start placing walls.
-    settingWall = !(selectedItem instanceof Wall);
+    console.log(selectedItem);
+    if (placingEnd) {
+        endNode.fillColour = "#FFF";
+        endNode = selectedItem;
+        endNode.fillColour = Helpers.getRandomColor();
+        update();
+    } else if (placingStart) {
+        startNode.fillColour = "#FFF";
+        startNode = selectedItem;
+        startNode.fillColour = Helpers.getRandomColor();
+        update();
+    }
+    else {
+        mouseIsDown = true;
+        // If the user first clicks on a wall, start deleting walls. Otherwise, start placing walls.
+        placingWall = !(selectedItem instanceof Wall);
+        mouseDragHandler(event); // Run the drag code on a single click so user don't have to move mouse for a new wall to be made
+    }
 }
 
 function mouseDragHandler(event) {
@@ -236,17 +268,21 @@ function mouseDragHandler(event) {
         let clickX = event.pageX - c.offsetLeft,
             clickY = event.pageY - c.offsetTop;
         let selectedItem = GridItem.getGridItemAtPosition(clickX, clickY);
-        if (selectedItem instanceof Wall && !settingWall) {
-            new AStarNode(selectedItem.x, selectedItem.y);
-        } else if (selectedItem instanceof Node && settingWall) {
-            new Wall(selectedItem.x, selectedItem.y);
+        // You can't put a wall on top of the goal or start
+        if (selectedItem !== startNode && selectedItem !== endNode) {
+            if (selectedItem instanceof Wall && !placingWall) {
+                new AStarNode(selectedItem.x, selectedItem.y);
+            } else if (selectedItem instanceof Node && placingWall) {
+                new Wall(selectedItem.x, selectedItem.y);
+            }
         }
         update();
     }
 }
 
-c.addEventListener('mousedown', startDrag);
+c.addEventListener('mousedown', mouseDownHandler);
 c.addEventListener('mouseup', function () {
     mouseIsDown = false;
 });
+c.addEventListener('keydown', keyDownHandler);
 c.addEventListener('mousemove', mouseDragHandler);
