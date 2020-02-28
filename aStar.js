@@ -3,7 +3,7 @@
  * Filename: aStar.js
  * Purpose: Runs the A* path finding algorithm
  */
-
+let showCosts = false;
 class AStarNode extends Node {
     constructor(x, y) {
         super(x, y);
@@ -40,11 +40,15 @@ class AStarNode extends Node {
     draw() {
         super.draw();
         ctx.font = "10px Arial";
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "black";
         ctx.textAlign = "right";
-        // ctx.fillText(Math.round(this.calculateFCost() * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
+        if(showCosts) {
+            ctx.fillText(Math.round(this.calculateFCost() * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
+        }
     }
 }
+
+
 
 Node.populateNodes(AStarNode); // Populate the grid with A* nodes
 
@@ -126,4 +130,20 @@ function updateAStar() {
             currNode.fillColour = "#F0F";
         update(); // Draw the grid onscreen
     }
+}
+
+function reset() {
+    openNodes = [startNode];
+    closedNodes = [];
+    finished = false;
+    gridArray.forEach(function(x) {
+        x.forEach(function(i) {
+            if(!Wall.isWall(i.x, i.y)) {
+                if(i !== startNode && i !== endNode) {
+                    new AStarNode(i.x, i.y);
+                }
+            }
+        });
+    });
+    update();
 }

@@ -6,14 +6,30 @@
         canvas {
             /*position: absolute;*/
             /*left: 50%;*/
-            /*transform: translate(-50%);*/
+            /*top: 50%;*/
+            /*transform: translate(-50%, -50%);*/
             border: 1px solid black;
+        }
+        .controls {
+            position: absolute;
+            left: 85%;
+            top: 30%;
+        }
+        .controls > button {
+            width: 100px;
+            height: 50px;
+        }
+        .instructions {
+            text-align: center;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
-E and click to place end point, S and click to place start point.<br>
-Click and drag to create walls
+<div class="instructions">
+    E and click to place end point, S and click to place start point.<br>
+    Click and drag to create walls
+</div>
 <canvas id="canvas" tabindex="1" autofocus width="600" height="600" style="margin:none; border: none; padding: none;"></canvas>
 <script src="drawableObjects.js"></script>
 <script src="main.js"></script>
@@ -21,9 +37,13 @@ Click and drag to create walls
 <!--<div id="speed-counter">Speed: </div>-->
 <!--<button type="button" onclick="changeAlgorithmSpeed(1)"> Speed Up</button>-->
 <!--<button type="button" onclick="changeAlgorithmSpeed(-1)"> Slow Down</button>-->
-<button type="button" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start A* Algorithm</button>
-<button type="button" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
-<button type="button" onclick="updateAStar()"> One Step</button>
+<div class="controls">
+    <button type="button" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start A* Algorithm</button>
+    <button type="button" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
+    <button type="button" onclick="updateAStar()"> One Step</button>
+    <button type="button" onclick="showCosts=!showCosts; update()">Show/Hide Costs</button>
+    <button type="button" onclick="reset()">Reset</button>
+</div>
 </body>
 
 </html>

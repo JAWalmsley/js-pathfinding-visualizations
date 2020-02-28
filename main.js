@@ -6,8 +6,9 @@
 
 let c = document.getElementById("canvas");
 let ctx = c.getContext("2d");
+let cBounds = c.getBoundingClientRect();
 
-const DEFAULT_NODE_SIZE = 10;   // Node width and height by default
+const DEFAULT_NODE_SIZE = 30;   // Node width and height by default
 const GRID_SIZE = c.width / DEFAULT_NODE_SIZE;  // # of nodes per side of canvas
 let gridArray = []; // 2-D array of all items in the grid
 
