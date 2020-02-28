@@ -10,27 +10,36 @@
             /*transform: translate(-50%, -50%);*/
             border: 1px solid black;
         }
+
         .controls {
             position: absolute;
-            left: 85%;
+            width: 100px;
+            left: 70%;
             top: 30%;
         }
+
         .controls > button {
             width: 100px;
             height: 50px;
         }
+
         .instructions {
             text-align: center;
             font-size: 20px;
+            height: 50px;
         }
     </style>
 </head>
 <body>
+<h1 style="text-align:center;">A* Pathfinding</h1>
 <div class="instructions">
-    E and click to place end point, S and click to place start point.<br>
-    Click and drag to create walls
+    E and click to place end point<br>
+    Click and drag to create walls<br>
+    Euclidean heuristic: pythagoream theorum distance<br>
+    Manhattan heuristic: deltaX  + deltaY
 </div>
-<canvas id="canvas" tabindex="1" autofocus width="600" height="600" style="margin:none; border: none; padding: none;"></canvas>
+<canvas id="canvas" tabindex="1" autofocus width="600" height="600"
+        style="margin:none; border: none; padding: none;"></canvas>
 <script src="drawableObjects.js"></script>
 <script src="main.js"></script>
 <script src="aStar.js"></script>
@@ -42,6 +51,8 @@
     <button type="button" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
     <button type="button" onclick="updateAStar()"> One Step</button>
     <button type="button" onclick="showCosts=!showCosts; update()">Show/Hide Costs</button>
+    <button type="button" onclick="heuristic = 0">Euclidean Heuristic</button>
+    <button type="button" onclick="heuristic = 1">Manhattan Heuristic</button>
     <button type="button" onclick="reset()">Reset</button>
 </div>
 </body>

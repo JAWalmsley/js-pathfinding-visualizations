@@ -63,9 +63,9 @@ function update() {
     GridItem.drawGrid();
 }
 
-function changeAlgorithmSpeed (amount) {
+function changeAlgorithmSpeed(amount) {
     // Only change the value if it won't go below 0, that would be weird
-    if(algorithmSpeed > 1 || amount > 0) {
+    if (algorithmSpeed > 1 || amount > 0) {
         algorithmSpeed += amount;
     }
     algorithmUpdateInterval = setInterval(updateAStar, defaultAlgorithmDelay / algorithmSpeed);
@@ -77,24 +77,14 @@ function changeAlgorithmSpeed (amount) {
 
 let mouseIsDown = false;
 let placingWall; // true for placing walls, false for deleting walls
-let placingStart = false;
 let placingEnd = false;
 
 function keyDownHandler(event) {
-    if (event.key == "s") {
-        placingStart = true;
-    } else if (event.key == "e") {
-        placingEnd = true;
-    } else {
-        placingEnd = false;
-        placingStart = false;
-    }
+    placingEnd = event.key === "e";
 }
 
 function keyUpHandler(event) {
-    if(event.key == "s") {
-        placingStart = false;
-    } else if (event.key == "e") {
+    if (event.key === "e") {
         placingEnd = false;
     }
 }
@@ -103,7 +93,7 @@ function mouseDownHandler(event) {
     let clickX = event.pageX - c.offsetLeft,
         clickY = event.pageY - c.offsetTop;
     let selectedItem = GridItem.getGridItemAtPosition(clickX, clickY);
-    if(!selectedItem) {
+    if (!selectedItem) {
         return;
     }
     if (placingEnd) {
@@ -111,13 +101,7 @@ function mouseDownHandler(event) {
         endNode = selectedItem;
         endNode.fillColour = endNodeColour;
         update();
-    } else if (placingStart) {
-        startNode.fillColour = "#FFF";
-        startNode = selectedItem;
-        startNode.fillColour = startNodeColour;
-        update();
-    }
-    else {
+    } else {
         mouseIsDown = true;
         // If the user first clicks on a wall, start deleting walls. Otherwise, start placing walls.
         placingWall = !(selectedItem instanceof Wall);

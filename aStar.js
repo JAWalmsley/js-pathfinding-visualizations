@@ -4,6 +4,8 @@
  * Purpose: Runs the A* path finding algorithm
  */
 let showCosts = false;
+let heuristic = 1; // Heuristic to use for H cost, 0 for euclidean distance, 1 for manhattan distance
+
 class AStarNode extends Node {
     constructor(x, y) {
         super(x, y);
@@ -22,7 +24,12 @@ class AStarNode extends Node {
      * @returns {number} The euclidean distance from this node to endNode
      */
     calculateHCost() {
-        return Node.getDistance(this, endNode);
+        switch(heuristic) {
+            case(0): // euclidean distance
+                return Node.getDistance(this, endNode);
+            case(1):
+                return(Math.abs(this.x - endNode.x) + Math.abs(this.y - endNode.y));
+        }
     }
 
     /**
@@ -42,18 +49,17 @@ class AStarNode extends Node {
         ctx.font = "10px Arial";
         ctx.fillStyle = "black";
         ctx.textAlign = "right";
-        if(showCosts) {
+        if (showCosts) {
             ctx.fillText(Math.round(this.calculateFCost() * 100) / 100, this.x * this.width + this.width, this.y * this.height + this.height);
         }
     }
 }
 
 
-
 Node.populateNodes(AStarNode); // Populate the grid with A* nodes
 
 // The node that the algorithm starts at
-startNode = new AStarNode(2, 2);
+startNode = new AStarNode(1, 1);
 startNode.fillColour = startNodeColour;
 
 // The startNode has zero cost to get to itself
@@ -84,6 +90,7 @@ function updateAStar() {
                 return b.fCost - a.fCost;
             });
 
+            // Once the node has been checked, close it se we don't go back to it again
             currNode = openNodes.pop();
             closedNodes.push(currNode);
 
@@ -136,10 +143,10 @@ function reset() {
     openNodes = [startNode];
     closedNodes = [];
     finished = false;
-    gridArray.forEach(function(x) {
-        x.forEach(function(i) {
-            if(!Wall.isWall(i.x, i.y)) {
-                if(i !== startNode && i !== endNode) {
+    gridArray.forEach(function (x) {
+        x.forEach(function (i) {
+            if (!Wall.isWall(i.x, i.y)) {
+                if (i !== startNode && i !== endNode) {
                     new AStarNode(i.x, i.y);
                 }
             }
