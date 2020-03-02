@@ -43,10 +43,10 @@ class Helpers {
      * @returns {string} - The random color code
      */
     static getRandomColor() {
-        let letters = '0123456789ABCDEF';
+        let letters = '23456789ABCD'; // Excluding extremes to avoid using colors used for other things, such as black
         let color = '#';
         for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+            color += letters[Math.floor(Math.random() * 12)];
         }
         return color;
     }
@@ -61,6 +61,23 @@ let endNodeColour = Helpers.getRandomColor();
  */
 function update() {
     GridItem.drawGrid();
+}
+
+function selectButtons() {
+    if (heuristic === 0) {
+        document.getElementById("euclidean").classList.add("selected");
+        document.getElementById("euclidean").classList.remove("unselected");
+
+        document.getElementById("manhattan").classList.add("unselected");
+        document.getElementById("manhattan").classList.remove("selected");
+    } else if (heuristic === 1) {
+        document.getElementById("manhattan").classList.add("selected");
+        document.getElementById("manhattan").classList.remove("unselected");
+
+        document.getElementById("euclidean").classList.remove("selected");
+        document.getElementById("euclidean").classList.add("unselected");
+
+    }
 }
 
 function changeAlgorithmSpeed(amount) {

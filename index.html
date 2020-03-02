@@ -3,6 +3,11 @@
 <head>
     <title>A* Pathfinding - Jack Walmsley</title>
     <style>
+        body {
+            color: #212121;
+            margin: 0;
+            font-family: sans-serif;
+        }
         canvas {
             /*position: absolute;*/
             /*left: 50%;*/
@@ -11,35 +16,74 @@
             border: 1px solid black;
         }
 
+        .top-bar {
+            height: 100px;
+            background-color: #9C27B0;
+            color: #FFFFFF;
+            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
+        }
+
         .controls {
             position: absolute;
-            width: 100px;
+            width: 10px;
             left: 70%;
             top: 30%;
         }
 
         .controls > button {
-            width: 100px;
-            height: 50px;
+            width: 175px;
+            padding: 16px;
+            margin: 5px;
+            font-family: sans-serif;
+            border-radius: 10px;
+            border: 0;
+            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .instructions {
+        button:active {
+            background-color: #E1BEE7;
+        }
+
+        .instructions-wrapper {
+            width: 300px;
+            position: absolute;
+            left: 50%;
+            transform:translate(-50%);
             text-align: center;
+        }
+
+        .instructions > li {
+            list-style-type: none;
+            margin-top: 20px;
             font-size: 20px;
-            height: 50px;
+        }
+
+        .unselected {
+            background-color: #00BCD4;
+            color: #757575;
+        }
+
+        .selected {
+            background-color: grey;
+            color: #FFFFFF;
         }
     </style>
 </head>
 <body>
-<h1 style="text-align:center;">A* Pathfinding</h1>
-<div class="instructions">
-    E and click to place end point<br>
-    Click and drag to create walls<br>
-    Euclidean heuristic: pythagoream theorum distance<br>
-    Manhattan heuristic: deltaX  + deltaY
+<div class="top-bar">
+    <h1 style="text-align:center;">A* Pathfinding</h1>
+</div>
+<div class="instructions-wrapper">
+    <ul class="instructions">
+        <li>E and click to place end point</li>
+        <li>Click and drag to create walls</li>
+        <li>Euclidean heuristic:<br>pythagorean theorem distance</li>
+        <li>Manhattan heuristic:<br>deltaX  + deltaY</li>
+    </ul>
+
 </div>
 <canvas id="canvas" tabindex="1" autofocus width="600" height="600"
-        style="margin:none; border: none; padding: none;"></canvas>
+        style="margin-top:30px; border: none; padding: none;"></canvas>
 <script src="drawableObjects.js"></script>
 <script src="main.js"></script>
 <script src="aStar.js"></script>
@@ -47,13 +91,14 @@
 <!--<button type="button" onclick="changeAlgorithmSpeed(1)"> Speed Up</button>-->
 <!--<button type="button" onclick="changeAlgorithmSpeed(-1)"> Slow Down</button>-->
 <div class="controls">
-    <button type="button" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start A* Algorithm</button>
-    <button type="button" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
-    <button type="button" onclick="updateAStar()"> One Step</button>
-    <button type="button" onclick="showCosts=!showCosts; update()">Show/Hide Costs</button>
-    <button type="button" onclick="heuristic = 0">Euclidean Heuristic</button>
-    <button type="button" onclick="heuristic = 1">Manhattan Heuristic</button>
-    <button type="button" onclick="reset()">Reset</button>
+    <button type="button" class="unselected" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">Start A* Algorithm</button>
+    <button type="button" class="unselected" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
+    <button type="button" class="unselected" onclick="updateAStar()"> One Step</button>
+    <button type="button" class="unselected" onclick="showCosts=!showCosts; update()">Show/Hide Costs</button>
+    <button type="button" onclick="heuristic = 0; selectButtons()" id="euclidean"><img src="icons/euclidean.png" style="vertical-align:middle">Euclidean Heuristic</button>
+    <button type="button" onclick="heuristic = 1; selectButtons()" id="manhattan"><img src="icons/manhattan.png" style="vertical-align:middle">Manhattan Heuristic</button>
+    <button type="button" class="unselected" onclick="reset()">Reset</button>
+    <script>selectButtons();</script>
 </div>
 </body>
 

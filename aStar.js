@@ -24,11 +24,11 @@ class AStarNode extends Node {
      * @returns {number} The euclidean distance from this node to endNode
      */
     calculateHCost() {
-        switch(heuristic) {
+        switch (heuristic) {
             case(0): // euclidean distance
                 return Node.getDistance(this, endNode);
             case(1):
-                return(Math.abs(this.x - endNode.x) + Math.abs(this.y - endNode.y));
+                return (Math.abs(this.x - endNode.x) + Math.abs(this.y - endNode.y));
         }
     }
 
@@ -42,7 +42,7 @@ class AStarNode extends Node {
     }
 
     /**
-     * Draws the node onscreen, with its F cost written on the bottom for added visualization
+     * Draws the node onscreen, with its F cost written on the bottom for added visualization, if it is desired
      */
     draw() {
         super.draw();
