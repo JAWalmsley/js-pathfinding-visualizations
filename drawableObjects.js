@@ -47,7 +47,6 @@ class GridItem extends DrawableObject {
     constructor(x, y, fillColour, strokeColour) {
         super(x, y, fillColour, strokeColour);
         gridArray[x][y] = this;
-        this.neighbors = [];
     }
 
     /**
@@ -78,21 +77,21 @@ class GridItem extends DrawableObject {
     }
 
     /**
-     * Gets all the surrounding grid items, including diagonals, and updates this.neighbors
+     * Gets all the surrounding nodes, including diagonals, and updates this.neighbors
      *
      * @returns {[]|*[]} - An array of the surrounding nodes
      */
     getNeighbors() {
-        this.neighbors = [];
+        let neighbors = [];
         for (let nx = this.x - 1; nx <= this.x + 1; nx++) {
             for (let ny = this.y - 1; ny <= this.y + 1; ny++) {
                 // You can't be your own neighbor
                 if (Node.isNode(nx, ny) && !(nx === this.x && ny === this.y)) {
-                    this.neighbors.push(gridArray[nx][ny]);
+                    neighbors.push(gridArray[nx][ny]);
                 }
             }
         }
-        return this.neighbors;
+        return neighbors;
     }
 }
 
