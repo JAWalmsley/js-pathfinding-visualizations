@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 20px;
+  color: #212121;
+  overflow: hidden;
+}
+.top-bar {
+  background-color: #F0F;
+  color: #000;
+  height: 80px;
+}
+.top-bar > h1 {
+  line-height: 80px;
+}
+.controls {
+  position: absolute;
+  top: 200px;
+  left: 704px;
+  width: 8px;
+}
+.controls > button {
+  width: 200px;
+  height: 48px;
+  margin: 8px;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 3px 3px #212121;
+}
+.controls > button:active {
+  background-color: #004d4d;
+}
+.controls > button:focus {
+  outline: 0;
+}
+.unselected {
+  background-color: #006666;
+  color: #FFF;
+}
+.selected {
+  background-color: #003333;
+  color: #FFF;
+}
+.instructions-wrapper {
+  position: absolute;
+  top: 200px;
+  left: 1200px;
+  transform: translate(-50%);
+}
+.instructions {
+  list-style: none;
+  color: #212121;
+}
+.instructions > li {
+  margin: 8px;
+  padding: 8px;
+  text-align: left;
+}
+/*# sourceMappingURL=material.css.map */

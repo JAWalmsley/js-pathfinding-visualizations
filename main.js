@@ -98,6 +98,7 @@ let placingEnd = false;
 
 function keyDownHandler(event) {
     placingEnd = event.key === "e";
+    console.log(placingEnd);
 }
 
 function keyUpHandler(event) {

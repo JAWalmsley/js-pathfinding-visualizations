@@ -1,0 +1,81 @@
+@background-colour: #FFF;
+@primary-colour: #F0F;
+@text-on-primary: #000;
+@secondary-colour: #006666;
+@text-on-secondary: #FFF;
+@text-on-white: #212121;
+
+@top-bar-height: 80px;
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 20px;
+  color: @text-on-white;
+  overflow: hidden;
+}
+
+.top-bar {
+  background-color: @primary-colour;
+  color: @text-on-primary;
+  height: @top-bar-height;
+}
+
+.top-bar > h1 {
+  line-height: @top-bar-height;
+}
+
+.controls {
+  position: absolute;
+  top: 200px;
+  left: 704px;
+  width: 8px;
+}
+
+.controls > button {
+  width: 200px;
+  height: 48px;
+  margin: 8px;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+
+  box-shadow: 0 3px 3px #212121;
+}
+
+.controls > button:active {
+  background-color: darken(@secondary-colour, 5%);
+}
+
+.controls > button:focus {
+  outline: 0;
+}
+
+.unselected {
+  background-color: @secondary-colour;
+  color: @text-on-secondary;
+}
+
+.selected {
+  background-color: darken(@secondary-colour, 10%);
+  color: @text-on-secondary;
+}
+
+.instructions-wrapper {
+  position: absolute;
+  top: 200px;
+  left: 1200px;
+  transform: translate(-50%)
+}
+
+.instructions {
+  list-style: none;
+  color: @text-on-white;
+}
+
+.instructions > li {
+  margin: 8px;
+  padding: 8px;
+  text-align: left;
+}
+
