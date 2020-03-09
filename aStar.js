@@ -27,7 +27,7 @@ class AStarNode extends Node {
         switch (heuristic) {
             case(0): // euclidean distance
                 return Node.getDistance(this, endNode);
-            case(1):
+            case(1): // manhattan distance
                 return (Math.abs(this.x - endNode.x) + Math.abs(this.y - endNode.y));
         }
     }
