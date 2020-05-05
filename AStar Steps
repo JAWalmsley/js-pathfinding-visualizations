@@ -1,0 +1,5 @@
+1. create a startNode and add it to array openNodes
+2. find the openNode with lowest fCost and make it currNode
+3. find all neighbors of currNode and add them to
+4. calculate all openNodes fCost
+3. sort openNodes[] by fCost

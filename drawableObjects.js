@@ -113,8 +113,19 @@ class Node extends GridItem {
      * @param node2 - The end node
      * @returns {number} - The euclidean distance between the two nodes
      */
-    static getDistance(node1, node2) {
+    static euclideanDistance(node1, node2) {
         return Helpers.pythagoreanTheorem(node1.x - node2.x, node1.y - node2.y);
+    }
+
+    /**
+     * Returns the manhattan distance between two nodes
+     *
+     * @param node1 - The start node
+     * @param node2 - The end node
+     * @returns {number} - The manhattan distance between the two nodes
+     */
+    static manhattanDistance(node1, node2){
+        return Math.abs(node1.x - node2.x) + Math.abs(node1.y - node2.y);
     }
 
     /**

@@ -26,9 +26,9 @@ class AStarNode extends Node {
     calculateHCost() {
         switch (heuristic) {
             case(0): // euclidean distance
-                return Node.getDistance(this, endNode);
+                return Node.euclideanDistance(this, endNode);
             case(1): // manhattan distance
-                return (Math.abs(this.x - endNode.x) + Math.abs(this.y - endNode.y));
+                return Node.manhattanDistance(this, endNode);
         }
     }
 
@@ -100,7 +100,7 @@ function updateAStar() {
                     return;
                 }
 
-                let newG = currNode.gCost + Node.getDistance(n, currNode);
+                let newG = currNode.gCost + Node.manhattanDistance(n, currNode);
                 // Update the neighbor's costs if it hasn't been checked yet, or if it can be reached with a lower gCost
                 if (!openNodes.includes(n) || newG < n.gCost) {
                     n.gCost = newG;
