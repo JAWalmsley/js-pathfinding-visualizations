@@ -77,7 +77,7 @@ class GridItem extends DrawableObject {
     }
 
     /**
-     * Gets all the surrounding nodes, including diagonals, and updates this.neighbors
+     * Gets all the surrounding nodes, excluding diagonals, and updates this.neighbors
      *
      * @returns {[]|*[]} - An array of the surrounding nodes
      */
@@ -85,8 +85,8 @@ class GridItem extends DrawableObject {
         let neighbors = [];
         for (let nx = this.x - 1; nx <= this.x + 1; nx++) {
             for (let ny = this.y - 1; ny <= this.y + 1; ny++) {
-                // You can't be your own neighbor
-                if (Node.isNode(nx, ny) && !(nx === this.x && ny === this.y)) {
+                // You can't be your own neighbor, must be adjacent no diagonals
+                if (Node.isNode(nx, ny) && !(nx === this.x && ny === this.y) && (nx === this.x || ny === this.y)) {
                     neighbors.push(gridArray[nx][ny]);
                 }
             }
