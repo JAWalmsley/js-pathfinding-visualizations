@@ -66,7 +66,7 @@ startNode.fillColour = startNodeColour;
 startNode.gCost = 0;
 
 // The node that is considered the goal for the algorithm
-endNode = new AStarNode(17, 10);
+endNode = new AStarNode(GRID_SIZE-1, GRID_SIZE-1);
 endNode.fillColour = endNodeColour;
 
 openNodes = [startNode]; // Nodes that can be visited, originally only contains startNode
