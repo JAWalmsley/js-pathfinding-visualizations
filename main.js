@@ -94,18 +94,6 @@ function changeAlgorithmSpeed(amount) {
 
 let mouseIsDown = false;
 let placingWall; // true for placing walls, false for deleting walls
-let placingEnd = false;
-
-function keyDownHandler(event) {
-    placingEnd = event.key === "e";
-    console.log(placingEnd);
-}
-
-function keyUpHandler(event) {
-    if (event.key === "e") {
-        placingEnd = false;
-    }
-}
 
 function mouseDownHandler(event) {
     let clickX = event.pageX - c.offsetLeft,
@@ -114,17 +102,10 @@ function mouseDownHandler(event) {
     if (!selectedItem) {
         return;
     }
-    if (placingEnd) {
-        endNode.fillColour = "#FFF";
-        endNode = selectedItem;
-        endNode.fillColour = endNodeColour;
-        update();
-    } else {
-        mouseIsDown = true;
-        // If the user first clicks on a wall, start deleting walls. Otherwise, start placing walls.
-        placingWall = !(selectedItem instanceof Wall);
-        mouseDragHandler(event); // Run the drag code on a single click so user don't have to move mouse for a new wall to be made
-    }
+    mouseIsDown = true;
+    // If the user first clicks on a wall, start deleting walls. Otherwise, start placing walls.
+    placingWall = !(selectedItem instanceof Wall);
+    mouseDragHandler(event); // Run the drag code on a single click so user don't have to move mouse for a new wall to be made
 }
 
 function mouseDragHandler(event) {
@@ -149,6 +130,4 @@ c.addEventListener('mousedown', mouseDownHandler);
 c.addEventListener('mouseup', function () {
     mouseIsDown = false;
 });
-c.addEventListener('keydown', keyDownHandler);
-c.addEventListener('keyup', keyUpHandler);
 c.addEventListener('mousemove', mouseDragHandler);

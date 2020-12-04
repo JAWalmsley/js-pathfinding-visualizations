@@ -10,8 +10,7 @@
 </div>
 <div class="instructions-wrapper">
     <ul class="instructions">
-        <li>E and click to place end point</li>
-        <li>Click and drag to create walls</li>
+        <li>Click and drag to draw walls</li>
         <!--        <li>Euclidean heuristic:<br>pythagorean theorem distance</li>-->
         <!--        <li>Manhattan heuristic:<br>deltaX + deltaY</li>-->
     </ul>
@@ -25,7 +24,7 @@
 <!--<button type="button" onclick="changeAlgorithmSpeed(1)"> Speed Up</button>-->
 <!--<button type="button" onclick="changeAlgorithmSpeed(-1)"> Slow Down</button>-->
 <div class="controls">
-    <button type="button" class="unselected" onclick="algorithmUpdateInterval = setInterval(updateAStar, 30)">
+    <button type="button" class="unselected" onclick="algorithmUpdateInterval = setInterval(updateAStar, 10)">
         Start A* Algorithm
     </button>
     <button type="button" class="unselected" onclick="clearInterval(algorithmUpdateInterval)">Stop Algorithm</button>
